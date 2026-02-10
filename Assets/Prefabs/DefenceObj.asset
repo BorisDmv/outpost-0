@@ -18,3 +18,5 @@ MonoBehaviour:
   cost:
   - resourceType: Food
     amount: 30
+  - resourceType: Iron
+    amount: 30
