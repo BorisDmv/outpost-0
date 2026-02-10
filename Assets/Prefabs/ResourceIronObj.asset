@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e65c857b083c04d2fa2cc42d483d7a99, type: 3}
+  m_Name: ResourceIronObj
+  m_EditorClassIdentifier: Assembly-CSharp::PlaceableObjectData
+  actualPrefab: {fileID: 4490960729599795087, guid: abb505a3d04f42d45b19905900c16c7b, type: 3}
+  ghostPrefab: {fileID: 3771145455142341585, guid: eb21a8e0683806e4ea2a1ca1b039211b, type: 3}
+  displayName: Food Building
+  cost:
+  - resourceType: Food
+    amount: 20

@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65c857b083c04d2fa2cc42d483d7a99, type: 3}
   m_Name: ResourceFoodObj
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableObjectData
-  actualPrefab: {fileID: 8691203588114396977, guid: ea8fcc942467c42babc64e1473a06798, type: 3}
-  ghostPrefab: {fileID: 3623475278835026365, guid: ffed4551822ba4433bd00160e90c1a26, type: 3}
+  actualPrefab: {fileID: 4490960729599795087, guid: abb505a3d04f42d45b19905900c16c7b, type: 3}
+  ghostPrefab: {fileID: 3771145455142341585, guid: eb21a8e0683806e4ea2a1ca1b039211b, type: 3}
   displayName: Food Building
+  cost:
+  - resourceType: Food
+    amount: 20

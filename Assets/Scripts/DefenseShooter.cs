@@ -12,9 +12,18 @@ public class DefenseShooter : MonoBehaviour
     [Tooltip("Optional: Where projectiles spawn from. If not set, will use building position.")]
     public Transform projectileSpawnPoint;
 
+    [Header("Visuals")]
+    [Tooltip("Optional: The head transform to rotate toward the target.")]
+    public Transform headTransform;
+
     private float attackTimer = 0f;
     private RangeCircle rangeCircle;
     private PlacedObject placedObject;
+
+    // For smooth head rotation
+    private Transform currentTarget;
+    [Header("Head Rotation")]
+    public float headRotationSpeed = 5f;
 
     void Awake()
     {
@@ -42,9 +51,21 @@ public class DefenseShooter : MonoBehaviour
                 GameObject target = FindNearestEnemy();
                 if (target != null)
                 {
+                    currentTarget = target.transform;
                     ShootAtEnemy(target);
                     attackTimer = attackInterval;
                 }
+            }
+        }
+
+        // Smoothly rotate head toward target
+        if (headTransform != null && currentTarget != null)
+        {
+            Vector3 lookDir = (currentTarget.position - headTransform.position).normalized;
+            if (lookDir.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(lookDir);
+                headTransform.rotation = Quaternion.Slerp(headTransform.rotation, targetRot, headRotationSpeed * Time.deltaTime);
             }
         }
     }
@@ -72,6 +93,7 @@ public class DefenseShooter : MonoBehaviour
 
     private void ShootAtEnemy(GameObject enemy)
     {
+        // No longer rotate head instantly; handled in Update for smoothness
         Vector3 spawnPos = projectileSpawnPoint != null ? projectileSpawnPoint.position : transform.position;
         Vector3 dir = (enemy.transform.position - spawnPos).normalized;
         GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(dir));
@@ -87,6 +109,7 @@ public class DefenseShooter : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = dir * projectileSpeed;
+            rb.useGravity = false;
         }
     }
 }

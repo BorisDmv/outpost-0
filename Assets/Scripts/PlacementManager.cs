@@ -18,7 +18,12 @@ public class PlacementManager : MonoBehaviour
     // Call this from your UI Button, passing the index of the object to place
     public void StartPlacement(int objectIndex)
     {
-        if (currentGhost != null) Destroy(currentGhost);
+        // Prevent starting placement if already active
+        if (currentGhost != null)
+        {
+            Debug.Log("Placement already active. Cancel or finish before starting a new one.");
+            return;
+        }
         if (objectIndex < 0 || objectIndex >= placeableObjects.Length)
         {
             Debug.LogError("Invalid placeable object index");
@@ -47,7 +52,22 @@ public class PlacementManager : MonoBehaviour
             {
                 if (currentGhost.GetComponent<PlacementGhost>().CanPlace())
                 {
-                    PlaceObject(placementPos);
+                    // Check resources before placing
+                    if (ResourcesManager.Instance.HasEnoughResources(currentData.cost))
+                    {
+                        ResourcesManager.Instance.SpendResources(currentData.cost);
+                        PlaceObject(placementPos);
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough resources to place this object! You need more:");
+                        foreach (var cost in currentData.cost)
+                        {
+                            int have = ResourcesManager.Instance.GetResourceCount(cost.resourceType);
+                            if (have < cost.amount)
+                                Debug.Log($"- {cost.resourceType}: {have}/{cost.amount}");
+                        }
+                    }
                 }
                 else
                 {
@@ -57,10 +77,21 @@ public class PlacementManager : MonoBehaviour
         }
 
         // Cancel on Right Click
-        if (Mouse.current.rightButton.wasPressedThisFrame) 
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             Destroy(currentGhost);
+            currentGhost = null;
+            currentData = null;
         }
+
+        // Cancel on Escape key
+        //if (Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame)
+        //{
+        //    Destroy(currentGhost);
+        //    currentGhost = null;
+        //    currentData = null;
+        //    Debug.Log("Placement cancelled by Escape.");
+        //}
     }
 
     void PlaceObject(Vector3 position)

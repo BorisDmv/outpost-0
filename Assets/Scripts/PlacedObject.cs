@@ -58,6 +58,9 @@ public class PlacedObject : MonoBehaviour
     {
         if (isPlaced && Mouse.current.leftButton.wasPressedThisFrame)
         {
+            // Prevent toggling if pointer is over UI
+            if (UnityEngine.EventSystems.EventSystem.current != null && UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+                return;
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hit))
             {

@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e65c857b083c04d2fa2cc42d483d7a99, type: 3}
   m_Name: DefenceObj
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableObjectData
-  actualPrefab: {fileID: 6260282483114703327, guid: c86be092311e04dab80eb667a141a27d, type: 3}
-  ghostPrefab: {fileID: 3623475278835026365, guid: ffed4551822ba4433bd00160e90c1a26, type: 3}
+  actualPrefab: {fileID: 5440909705864352524, guid: 8f9e2ad2e87e68a4897936533ffbdc9b, type: 3}
+  ghostPrefab: {fileID: 1028089412316188863, guid: 5e226ceec5d29e54992af3fc5e011576, type: 3}
   displayName: Shooting Tower
+  cost:
+  - resourceType: Food
+    amount: 30
