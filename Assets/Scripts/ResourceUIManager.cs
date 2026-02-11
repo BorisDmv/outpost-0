@@ -29,10 +29,15 @@ public class ResourceUIManager : MonoBehaviour
 
     void Update()
     {
-        if (panel != null && panel.activeSelf && selectedResource != null)
+        if (panel != null && panel.activeSelf)
         {
-            amountText.text = $"{selectedResourceType}: {selectedResource.amount}";
             if (selectedResource == null || selectedResource.gameObject == null)
+            {
+                HidePanel();
+                return;
+            }
+            amountText.text = $"{selectedResourceType}: {selectedResource.amount}";
+            if (selectedResource.amount < 1)
             {
                 HidePanel();
             }

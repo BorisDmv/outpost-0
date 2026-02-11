@@ -150,7 +150,7 @@ public class ResourcesManager : MonoBehaviour
     {
         if (resourceTextFields.TryGetValue(resourceType, out TMP_Text textField) && textField != null)
         {
-            textField.text = $"{resourceType}: {resourceCounts[resourceType]}";
+            textField.text = $"{resourceCounts[resourceType]}";
         }
         else
         {

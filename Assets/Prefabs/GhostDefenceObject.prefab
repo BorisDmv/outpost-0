@@ -300,6 +300,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1560235255041371348}
     m_Modifications:
+    - target: {fileID: 4228719467152724497, guid: 6a43582621dfc47ac9b2e699fe642a7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9c22924d039379c4eafff31863f8d471, type: 2}
+    - target: {fileID: 6711322695302465658, guid: 6a43582621dfc47ac9b2e699fe642a7f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9c22924d039379c4eafff31863f8d471, type: 2}
     - target: {fileID: 8570976652260661104, guid: 6a43582621dfc47ac9b2e699fe642a7f, type: 3}
       propertyPath: m_Name
       value: Missile Space Launcher 01

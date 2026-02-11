@@ -18,5 +18,5 @@ MonoBehaviour:
   cost:
   - resourceType: Crystal
     amount: 30
-  - resourceType: Emerald
+  - resourceType: Ruby
     amount: 10
