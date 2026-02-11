@@ -2,16 +2,16 @@ using UnityEngine;
 
 public class bullet : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float lifetime = 120f; // Bullet will be destroyed after 2 minutes by default
+
     void Start()
     {
-        
+        Destroy(gameObject, lifetime);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // Optional: add bullet movement logic here
     }
 
     void OnCollisionEnter(Collision collision)

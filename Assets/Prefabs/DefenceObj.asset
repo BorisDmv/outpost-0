@@ -16,7 +16,7 @@ MonoBehaviour:
   ghostPrefab: {fileID: 1028089412316188863, guid: 5e226ceec5d29e54992af3fc5e011576, type: 3}
   displayName: Shooting Tower
   cost:
-  - resourceType: Food
+  - resourceType: Crystal
     amount: 30
-  - resourceType: Iron
-    amount: 30
+  - resourceType: Emerald
+    amount: 10

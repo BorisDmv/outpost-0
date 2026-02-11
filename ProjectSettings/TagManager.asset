@@ -4,9 +4,10 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - Food
   - Enemy
-  - Iron
+  - Crystal
+  - Emerald
+  - Ruby
   layers:
   - Default
   - TransparentFX
