@@ -9,6 +9,11 @@ public class ResourcesManager : MonoBehaviour
 {
     public static ResourcesManager Instance { get; private set; }
 
+    [Header("Win Condition")]
+    public string winResourceType = "";
+    public int winAmount = 0;
+    public bool gameWon = false;
+
     // For Unity Inspector (since Dictionary is not serializable), use this helper
     [System.Serializable]
     public struct ResourceTextEntry
@@ -91,6 +96,8 @@ public class ResourcesManager : MonoBehaviour
                 }
             }
         }
+
+        CheckWinCondition();
     }
 
     // Add resource and update UI
@@ -113,6 +120,7 @@ public class ResourcesManager : MonoBehaviour
             }
         }
         UpdateResourceUI(resourceType);
+        CheckWinCondition();
     }
 
 
@@ -155,6 +163,32 @@ public class ResourcesManager : MonoBehaviour
         else
         {
             Debug.Log($"Resource {resourceType} updated: {resourceCounts[resourceType]}");
+        }
+    }
+
+    private void CheckWinCondition()
+    {
+        if (gameWon)
+        {
+            return;
+        }
+
+        if (string.IsNullOrEmpty(winResourceType) || winAmount <= 0)
+        {
+            return;
+        }
+
+        if (GetResourceCount(winResourceType) >= winAmount)
+        {
+            gameWon = true;
+            if (GameWinUI.Instance != null)
+            {
+                GameWinUI.Instance.ShowWin();
+            }
+            else
+            {
+                Debug.LogWarning("GameWinUI instance not found.");
+            }
         }
     }
 }
