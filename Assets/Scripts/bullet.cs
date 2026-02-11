@@ -3,6 +3,7 @@ using UnityEngine;
 public class bullet : MonoBehaviour
 {
     public float lifetime = 120f; // Bullet will be destroyed after 2 minutes by default
+    public int damage = 10;
 
     void Start()
     {
@@ -18,6 +19,10 @@ public class bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            if (collision.gameObject.TryGetComponent(out Enemy enemy))
+            {
+                enemy.TakeDamage(damage);
+            }
             Destroy(gameObject);
         }
     }

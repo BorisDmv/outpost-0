@@ -1,8 +1,12 @@
 using UnityEngine;
 
+// ...existing code...
 [RequireComponent(typeof(PlacedObject))]
 public class DefenseShooter : MonoBehaviour
 {
+    [Header("Health")]
+    public int maxHealth = 100;
+    public int currentHealth = 100;
     [Header("Defense Shooting")]
     public GameObject projectilePrefab;
     public string enemyTag = "Enemy";
@@ -68,6 +72,23 @@ public class DefenseShooter : MonoBehaviour
                 headTransform.rotation = Quaternion.Slerp(headTransform.rotation, targetRot, headRotationSpeed * Time.deltaTime);
             }
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    public void Heal(int healAmount)
+    {
+        currentHealth += healAmount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
 
     private GameObject FindNearestEnemy()

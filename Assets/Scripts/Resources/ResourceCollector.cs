@@ -12,6 +12,10 @@ public class ResourceCollector : MonoBehaviour
     private RangeCircle rangeCircle;
     private PlacedObject placedObject;
 
+    [Header("Health")]
+    public int maxHealth = 100;
+    public int currentHealth = 100;
+
     void Awake()
     {
         rangeCircle = GetComponentInChildren<RangeCircle>();
@@ -45,6 +49,23 @@ public class ResourceCollector : MonoBehaviour
                 break; // Only collect from one resource at a time
             }
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+    public void Heal(int healAmount)
+    {
+        currentHealth += healAmount;
+        if (currentHealth > maxHealth) currentHealth = maxHealth;
     }
 
     private void CollectResource(GameObject resource)

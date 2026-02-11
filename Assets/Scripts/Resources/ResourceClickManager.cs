@@ -14,19 +14,36 @@ public class ResourceClickManager : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                var resource = hit.collider.GetComponent<Resource>();
+                var resource = hit.collider.GetComponentInParent<Resource>();
+                var collector = hit.collider.GetComponentInParent<ResourceCollector>();
+                var defenseShooter = hit.collider.GetComponentInParent<DefenseShooter>();
+
+                GameObject targetObj = null;
                 if (resource != null)
+                {
+                    targetObj = resource.gameObject;
+                }
+                else if (collector != null)
+                {
+                    targetObj = collector.gameObject;
+                }
+                else if (defenseShooter != null)
+                {
+                    targetObj = defenseShooter.gameObject;
+                }
+
+                if (targetObj != null)
                 {
                     var ui = ResourceUIManager.Instance;
                     if (ui != null)
                     {
-                        if (ui.IsPanelOpen && ui.IsResourceSelected(resource))
+                        if (ui.IsPanelOpen && ui.IsObjectSelected(targetObj))
                         {
                             ui.HidePanel();
                         }
                         else
                         {
-                            ui.ShowResourceAmount(hit.collider.gameObject.name, resource.amount, resource);
+                            ui.ShowObjectInfo(targetObj);
                         }
                     }
                 }
