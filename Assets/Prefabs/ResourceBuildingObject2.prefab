@@ -294,6 +294,8 @@ MonoBehaviour:
   resourceTag: Crystal
   collectionInterval: 2
   resourceAmountPerTick: 1
+  maxHealth: 100
+  currentHealth: 100
 --- !u!135 &8117251748467350853
 SphereCollider:
   m_ObjectHideFlags: 0

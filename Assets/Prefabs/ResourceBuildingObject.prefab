@@ -78,6 +78,8 @@ MonoBehaviour:
   resourceTag: Emerald
   collectionInterval: 2
   resourceAmountPerTick: 1
+  maxHealth: 100
+  currentHealth: 100
 --- !u!135 &4652912894817371819
 SphereCollider:
   m_ObjectHideFlags: 0
