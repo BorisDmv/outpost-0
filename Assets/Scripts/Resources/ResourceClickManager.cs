@@ -17,6 +17,7 @@ public class ResourceClickManager : MonoBehaviour
                 var resource = hit.collider.GetComponentInParent<Resource>();
                 var collector = hit.collider.GetComponentInParent<ResourceCollector>();
                 var defenseShooter = hit.collider.GetComponentInParent<DefenseShooter>();
+                var baseObj = hit.collider.GetComponentInParent<Base>();
 
                 GameObject targetObj = null;
                 if (resource != null)
@@ -30,6 +31,10 @@ public class ResourceClickManager : MonoBehaviour
                 else if (defenseShooter != null)
                 {
                     targetObj = defenseShooter.gameObject;
+                }
+                else if (baseObj != null)
+                {
+                    targetObj = baseObj.gameObject;
                 }
 
                 if (targetObj != null)

@@ -99,6 +99,24 @@ public class ResourceUIManager : MonoBehaviour
             return;
         }
 
+        var baseObj = selectedObject.GetComponent<Base>();
+        if (baseObj != null)
+        {
+            string progress = "";
+            var mgr = ResourcesManager.Instance;
+            if (mgr != null && mgr.winConditions != null && mgr.winConditions.Length > 0)
+            {
+                progress = "\n\nWin Progress:\n";
+                foreach (var cond in mgr.winConditions)
+                {
+                    int current = mgr.GetResourceCount(cond.resourceType);
+                    progress += $"{cond.resourceType}: {current}/{cond.amount}\n";
+                }
+            }
+            amountText.text = $"Base Health: {baseObj.currentHealth}/{baseObj.maxHealth}{progress}";
+            return;
+        }
+
         amountText.text = selectedObjectName;
     }
 }

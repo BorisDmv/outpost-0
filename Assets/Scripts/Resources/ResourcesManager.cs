@@ -9,9 +9,13 @@ public class ResourcesManager : MonoBehaviour
 {
     public static ResourcesManager Instance { get; private set; }
 
+    [System.Serializable]
+    public struct WinCondition {
+        public string resourceType;
+        public int amount;
+    }
     [Header("Win Condition")]
-    public string winResourceType = "";
-    public int winAmount = 0;
+    public WinCondition[] winConditions;
     public bool gameWon = false;
 
     // For Unity Inspector (since Dictionary is not serializable), use this helper
@@ -172,23 +176,27 @@ public class ResourcesManager : MonoBehaviour
         {
             return;
         }
-
-        if (string.IsNullOrEmpty(winResourceType) || winAmount <= 0)
+        if (winConditions == null || winConditions.Length == 0)
         {
             return;
         }
 
-        if (GetResourceCount(winResourceType) >= winAmount)
+        foreach (var cond in winConditions)
         {
-            gameWon = true;
-            if (GameWinUI.Instance != null)
-            {
-                GameWinUI.Instance.ShowWin();
-            }
-            else
-            {
-                Debug.LogWarning("GameWinUI instance not found.");
-            }
+            if (string.IsNullOrEmpty(cond.resourceType) || cond.amount <= 0)
+                return;
+            if (GetResourceCount(cond.resourceType) < cond.amount)
+                return;
+        }
+
+        gameWon = true;
+        if (GameWinUI.Instance != null)
+        {
+            GameWinUI.Instance.ShowWin();
+        }
+        else
+        {
+            Debug.LogWarning("GameWinUI instance not found.");
         }
     }
 }
