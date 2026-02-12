@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
 
     [Header("Movement")]
     public float moveSpeed = 3f;
+    [Header("Rotation")]
+    public float rotationSpeed = 180f; // degrees per second
     public float targetRefreshInterval = 0.5f;
     public float attackRange = 0.6f;
 
@@ -15,6 +17,13 @@ public class Enemy : MonoBehaviour
     public int damageToBuilding = 10;
     public float attackInterval = 1.0f;
     public string placementLayerName = "Placement";
+    public bool requirePlacementLayer = false;
+
+    [Header("Death")]
+    public ParticleSystem deathExplosionPrefab;
+    public float destroyDelay = 0.2f;
+
+    private bool isDying = false;
 
     private Transform currentTarget;
     private float targetRefreshTimer = 0f;
@@ -44,6 +53,16 @@ public class Enemy : MonoBehaviour
             Vector3 targetPos = currentTarget.position;
             Vector3 moveDir = (targetPos - transform.position);
             float distance = moveDir.magnitude;
+            if (distance > 0.01f)
+            {
+                // Smoothly rotate towards movement direction
+                Quaternion targetRot = Quaternion.LookRotation(moveDir.normalized, Vector3.up);
+                transform.rotation = Quaternion.RotateTowards(
+                    transform.rotation,
+                    targetRot,
+                    rotationSpeed * Time.deltaTime
+                );
+            }
             if (distance <= attackRange)
             {
                 attackTimer -= Time.deltaTime;
@@ -55,6 +74,7 @@ public class Enemy : MonoBehaviour
                 return;
             }
 
+            // Always move directly toward the target
             Vector3 step = moveDir.normalized * moveSpeed * Time.deltaTime;
             transform.position += step;
         }
@@ -62,32 +82,63 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if (isDying) return;
+
         currentHealth -= damage;
         if (currentHealth < 0) currentHealth = 0;
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        if (isDying) return;
+        isDying = true;
+
+        if (deathExplosionPrefab != null)
+        {
+            ParticleSystem ps = Instantiate(deathExplosionPrefab, transform.position, Quaternion.identity);
+            ps.Play();
+            Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
+        }
+
+        Destroy(gameObject, destroyDelay);
     }
 
     private Transform FindClosestPlacedTarget()
     {
-        PlacedObject[] placedObjects = FindObjectsOfType<PlacedObject>();
         Transform closest = null;
         float minDist = float.MaxValue;
 
+        // 1) Target placed buildings
+        PlacedObject[] placedObjects = FindObjectsOfType<PlacedObject>();
         foreach (var placed in placedObjects)
         {
             if (!placed.IsPlaced)
-            {
                 continue;
-            }
 
             GameObject obj = placed.gameObject;
-            if (placementLayer >= 0 && obj.layer != placementLayer)
-            {
+            if (requirePlacementLayer && placementLayer >= 0 && obj.layer != placementLayer)
                 continue;
+
+            float dist = (obj.transform.position - transform.position).sqrMagnitude;
+            if (dist < minDist)
+            {
+                minDist = dist;
+                closest = obj.transform;
             }
+        }
+
+        // 2) Also target the Control Tower / Base (doesn't implement PlacedObject)
+        Base[] bases = FindObjectsOfType<Base>();
+        foreach (var b in bases)
+        {
+            if (b == null) continue;
+            GameObject obj = b.gameObject;
+            if (requirePlacementLayer && placementLayer >= 0 && obj.layer != placementLayer)
+                continue;
 
             float dist = (obj.transform.position - transform.position).sqrMagnitude;
             if (dist < minDist)

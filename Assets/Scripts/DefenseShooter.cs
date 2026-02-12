@@ -129,6 +129,7 @@ public class DefenseShooter : MonoBehaviour
         Rigidbody rb = proj.GetComponent<Rigidbody>();
         if (rb != null)
         {
+            rb.isKinematic = false;
             rb.linearVelocity = dir * projectileSpeed;
             rb.useGravity = false;
         }
